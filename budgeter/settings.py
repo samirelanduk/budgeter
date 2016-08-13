@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-from .secret_settings import BASE_DIR, SECRET_KEY, DATABASES
+from .secrets import BASE_DIR, SECRET_KEY, DATABASES
 
 
 # Quick-start development settings - unsuitable for production
