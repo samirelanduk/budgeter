@@ -1,0 +1,6 @@
+__pychache__
+*.pyc
+*.sqlite3
+.DS_Store
+
+secrets.py
