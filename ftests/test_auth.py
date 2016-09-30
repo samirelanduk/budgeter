@@ -36,7 +36,7 @@ class AccountCreationTests(FunctionalTest):
         # The user is taken to the account page for their new account
         self.assertEqual(
          self.browser.current_url,
-         self.live_server_url + "/myaccount/"
+         self.live_server_url + "/accounts/me/"
         )
         self.assertEqual(
          self.browser.find_element_by_tag_name("h1"),
