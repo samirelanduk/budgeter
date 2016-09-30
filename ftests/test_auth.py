@@ -32,3 +32,17 @@ class AccountCreationTests(FunctionalTest):
         inputs[2].send_keys("testemail@samireland.com")
         inputs[3].send_keys("secret_shhh")
         inputs[-1].click()
+
+        # The user is taken to the account page for their new account
+        self.assertEqual(
+         self.browser.current_url,
+         self.live_server_url + "/myaccount/"
+        )
+        self.assertEqual(
+         self.browser.find_element_by_tag_name("h1"),
+         "Account"
+        )
+        self.assertEqual(
+         self.browser.find_element_by_tag_name("h2"),
+         "Joe Blow"
+        )
