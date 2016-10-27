@@ -17,7 +17,7 @@ class AccountCreationTests(FunctionalTest):
         auth_links[0].click()
         self.assertEqual(
          self.browser.current_url,
-         self.live_server_url + "/accounts/signup/"
+         self.live_server_url + "/users/signup/"
         )
         self.assertEqual(
          self.browser.find_element_by_tag_name("h1").text,
@@ -36,7 +36,7 @@ class AccountCreationTests(FunctionalTest):
         # The user is taken to the account page for their new account
         self.assertEqual(
          self.browser.current_url,
-         self.live_server_url + "/accounts/me/"
+         self.live_server_url + "/users/me/"
         )
         self.assertEqual(
          self.browser.find_element_by_tag_name("h1").text,
@@ -66,7 +66,7 @@ class AccountLoginTests(FunctionalTest):
         auth_links[1].click()
         self.assertEqual(
          self.browser.current_url,
-         self.live_server_url + "/accounts/login/"
+         self.live_server_url + "/users/login/"
         )
         self.assertEqual(
          self.browser.find_element_by_tag_name("h1").text,
@@ -96,7 +96,7 @@ class AccountLoginTests(FunctionalTest):
         account_link.click()
         self.assertEqual(
          self.browser.current_url,
-         self.live_server_url + "/accounts/me/"
+         self.live_server_url + "/users/me/"
         )
         self.assertEqual(
          self.browser.find_element_by_tag_name("h2").text,

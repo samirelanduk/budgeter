@@ -17,7 +17,7 @@ def signup_page(request):
          password=request.POST["password"]
         )
         login(request, user)
-        return redirect("/accounts/me/")
+        return redirect("/users/me/")
     return render(request, "signup.html")
 
 
