@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Your Account{% endblock %}
+
+{% block main %}
+<h1>Log in to your account</h1>
+
+<form method="POST">
+  <div>
+    <label for="id_email">Email</label>
+    <input type="text" name="email" id="id_email">
+  </div>
+  <div>
+    <label for="id_password">Password</label>
+    <input type="password" name="password" id="id_password">
+  </div>
+  {% csrf_token %}
+  <div>
+    <input type="submit">
+  </div>
+</form>
+{% endblock %}
