@@ -23,3 +23,7 @@ def signup_page(request):
 
 def account_page(request):
     return render(request, "account.html")
+
+
+def login_page(request):
+    pass
