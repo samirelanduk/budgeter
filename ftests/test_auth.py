@@ -39,10 +39,10 @@ class AccountCreationTests(FunctionalTest):
          self.live_server_url + "/accounts/me/"
         )
         self.assertEqual(
-         self.browser.find_element_by_tag_name("h1"),
+         self.browser.find_element_by_tag_name("h1").text,
          "Account"
         )
         self.assertEqual(
-         self.browser.find_element_by_tag_name("h2"),
+         self.browser.find_element_by_tag_name("h2").text,
          "Joe Blow"
         )
