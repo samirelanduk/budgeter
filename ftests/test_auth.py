@@ -46,3 +46,59 @@ class AccountCreationTests(FunctionalTest):
          self.browser.find_element_by_tag_name("h2").text,
          "Joe Blow"
         )
+
+
+
+class AccountLoginTests(FunctionalTest):
+
+    def test_can_login(self):
+        # User goes to the home page
+        self.browser.get(self.live_server_url + "/")
+
+        # There is the option to create an account and login
+        auth_div = self.browser.find_element_by_id("auth")
+        auth_links = auth_div.find_elements_by_tag_name("a")
+        self.assertEqual(len(auth_links), 2)
+        self.assertEqual(auth_links[0].text, "Sign Up")
+        self.assertEqual(auth_links[1].text, "Log In")
+
+        # User clicks the log in and is taken to the log in page
+        auth_links[1].click()
+        self.assertEqual(
+         self.browser.current_url,
+         self.live_server_url + "/accounts/login/"
+        )
+        self.assertEqual(
+         self.browser.find_element_by_tag_name("h1").text,
+         "Log in to your account"
+        )
+
+        # User enters their details
+        form = self.browser.find_element_by_tag_name("form")
+        inputs = form.find_elements_by_tag_name("input")
+        inputs[0].send_keys("p1@s.com")
+        inputs[1].send_keys("secret1")
+        inputs[-1].click()
+
+        # The user is back on the home page
+        self.assertEqual(self.browser.current_url, self.live_server_url + "/")
+
+        # There is a logout link now
+        auth_div = self.browser.find_element_by_id("auth")
+        auth_links = auth_div.find_elements_by_tag_name("a")
+        self.assertEqual(len(auth_links), 1)
+        self.assertEqual(auth_links[0].text, "Log Out")
+
+        # There is a link to the account page
+        account_div = self.browser.find_element_by_id("account")
+        account_link = account_div.find_element_by_tag_name("a")
+        self.assertEqual(account_link.text, "Your Account")
+        account_link.click()
+        self.assertEqual(
+         self.browser.current_url,
+         self.live_server_url + "/accounts/me/"
+        )
+        self.assertEqual(
+         self.browser.find_element_by_tag_name("h2").text,
+         "Persona Una"
+        )
