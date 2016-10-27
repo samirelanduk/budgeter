@@ -148,3 +148,29 @@ class AccountLoginTests(FunctionalTest):
          errors.text,
          "Credentials incorrect."
         )
+
+
+    def test_can_logout(self):
+        # User logs in
+        self.browser.get(self.live_server_url + "/users/login/")
+        form = self.browser.find_element_by_tag_name("form")
+        inputs = form.find_elements_by_tag_name("input")
+        inputs[0].send_keys("p2@s.com")
+        inputs[1].send_keys("secret2")
+        inputs[-1].click()
+
+        # They are on the home page and there is a logout link
+        self.assertEqual(self.browser.current_url, self.live_server_url + "/")
+        auth_div = self.browser.find_element_by_id("auth")
+        auth_links = auth_div.find_elements_by_tag_name("a")
+        self.assertEqual(len(auth_links), 1)
+        self.assertEqual(auth_links[0].text, "Log Out")
+
+        # They click it and are logged out
+        auth_links[0].click()
+        self.assertEqual(self.browser.current_url, self.live_server_url + "/")
+        auth_div = self.browser.find_element_by_id("auth")
+        auth_links = auth_div.find_elements_by_tag_name("a")
+        self.assertEqual(len(auth_links), 2)
+        self.assertEqual(auth_links[0].text, "Sign Up")
+        self.assertEqual(auth_links[1].text, "Log In")
