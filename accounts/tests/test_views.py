@@ -51,3 +51,11 @@ class AccountViewTests(ViewTest):
     def test_account_view_uses_account_template(self):
         response = self.client.get("/accounts/me/")
         self.assertTemplateUsed(response, "account.html")
+
+
+
+class LoginViewTests(ViewTest):
+
+    def test_login_view_uses_login_template(self):
+        response = self.client.get("/accounts/login/")
+        self.assertTemplateUsed(response, "login.html")

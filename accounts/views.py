@@ -26,4 +26,4 @@ def account_page(request):
 
 
 def login_page(request):
-    pass
+    return render(request, "login.html")
