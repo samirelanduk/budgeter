@@ -14,6 +14,10 @@
     <label for="id_password">Password</label>
     <input type="password" name="password" id="id_password">
   </div>
+  {% if credentials_incorrect %}
+  <div id="login_errors">Credentials incorrect.</div>
+  {% endif %}
+
   {% csrf_token %}
   <div>
     <input type="submit">

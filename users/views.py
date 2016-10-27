@@ -34,4 +34,6 @@ def login_page(request):
         if user is not None:
             login(request, user)
             return redirect("/")
+        else:
+            return render(request, "login.html", {"credentials_incorrect": True})
     return render(request, "login.html")

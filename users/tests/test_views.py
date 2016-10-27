@@ -76,3 +76,13 @@ class LoginViewTests(ViewTest):
          "password": "secret1"
         })
         self.assertIn("_auth_user_id", self.client.session)
+
+
+    def test_login_view_wont_accept_wrong_details(self):
+        self.assertNotIn("_auth_user_id", self.client.session)
+        response = self.client.post("/users/login/", data={
+         "email": "xxx@s.com",
+         "password": "xxxxx"
+        })
+        self.assertNotIn("_auth_user_id", self.client.session)
+        self.assertTrue(response.context["credentials_incorrect"])
