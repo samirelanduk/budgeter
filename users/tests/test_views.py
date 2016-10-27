@@ -86,3 +86,14 @@ class LoginViewTests(ViewTest):
         })
         self.assertNotIn("_auth_user_id", self.client.session)
         self.assertTrue(response.context["credentials_incorrect"])
+
+
+
+class LogoutViewTests(ViewTest):
+
+    def test_logout_view_can_actually_logout(self):
+        self.client.login(username="p1@s.com", password="secret1")
+        self.assertIn("_auth_user_id", self.client.session)
+        response = self.client.get("/users/logout/")
+        self.assertNotIn("_auth_user_id", self.client.session)
+        self.assertRedirects(response, "/")

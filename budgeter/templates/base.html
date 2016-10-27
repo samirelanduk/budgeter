@@ -16,9 +16,11 @@
     <a href="/users/login/">Log In</a>
     {% endif %}
   </div>
+  {% if user.is_authenticated %}
   <div id="account">
     <a href="/users/me/">Your Account</a>
   </div>
+  {% endif %}
   {% block main %}
   {% endblock %}
 </body>
