@@ -19,15 +19,15 @@ class SignUpViewTests(ViewTest):
 
 
     def test_signup_view_can_create_account(self):
-        self.assertEqual(User.objects.count(), 0)
+        self.assertEqual(User.objects.count(), 2)
         self.client.post("/users/signup/", data={
          "firstname": "Isaac",
          "lastname": "Jones",
          "email": "xyz@abc.xy",
          "password": "swordfish"
         })
-        self.assertEqual(User.objects.count(), 1)
-        user = User.objects.first()
+        self.assertEqual(User.objects.count(), 3)
+        user = User.objects.last()
         self.assertEqual(user.first_name, "Isaac")
         self.assertEqual(user.last_name, "Jones")
         self.assertEqual(user.email, "xyz@abc.xy")
@@ -63,7 +63,16 @@ class LoginViewTests(ViewTest):
 
     def test_login_view_redirects_to_home(self):
         response = self.client.post("/users/login/", data={
-         "email": "xyz@abc.xy",
-         "password": "swordfish"
+         "email": "p1@s.com",
+         "password": "secret1"
         })
         self.assertRedirects(response, "/")
+
+
+    def test_login_view_will_log_in_user(self):
+        self.assertNotIn("_auth_user_id", self.client.session)
+        self.client.post("/users/login/", data={
+         "email": "p1@s.com",
+         "password": "secret1"
+        })
+        self.assertIn("_auth_user_id", self.client.session)

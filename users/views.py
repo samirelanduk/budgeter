@@ -27,5 +27,11 @@ def account_page(request):
 
 def login_page(request):
     if request.method == "POST":
-        return redirect("/")
+        user = authenticate(
+         username=request.POST["email"],
+         password=request.POST["password"]
+        )
+        if user is not None:
+            login(request, user)
+            return redirect("/")
     return render(request, "login.html")
