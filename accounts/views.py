@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
 
 # Create your views here.
 def signup_page(request):
@@ -11,6 +12,11 @@ def signup_page(request):
          password=request.POST["password"],
          username=request.POST["email"]
         )
+        user = authenticate(
+         username=request.POST["email"],
+         password=request.POST["password"]
+        )
+        login(request, user)
         return redirect("/accounts/me/")
     return render(request, "signup.html")
 

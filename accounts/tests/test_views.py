@@ -33,6 +33,17 @@ class SignUpViewTests(ViewTest):
         self.assertEqual(user.email, "xyz@abc.xy")
 
 
+    def test_signup_view_will_sign_in_new_user(self):
+        self.assertNotIn("_auth_user_id", self.client.session)
+        self.client.post("/accounts/signup/", data={
+         "firstname": "Isaac",
+         "lastname": "Jones",
+         "email": "xyz@abc.xy",
+         "password": "swordfish"
+        })
+        self.assertIn("_auth_user_id", self.client.session)
+
+
 
 
 class AccountViewTests(ViewTest):
