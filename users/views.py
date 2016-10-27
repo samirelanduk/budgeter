@@ -37,3 +37,7 @@ def login_page(request):
         else:
             return render(request, "login.html", {"credentials_incorrect": True})
     return render(request, "login.html")
+
+
+def logout_page(request):
+    pass

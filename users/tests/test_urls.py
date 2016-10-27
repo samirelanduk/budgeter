@@ -11,5 +11,9 @@ class HomeUrlTests(UrlTest):
         self.check_url_returns_view("/users/me/", views.account_page)
 
 
-    def test_login_url_resolves_to_me_view(self):
+    def test_login_url_resolves_to_login_view(self):
         self.check_url_returns_view("/users/login/", views.login_page)
+
+
+    def test_logout_url_resolves_to_logout_view(self):
+        self.check_url_returns_view("/users/logout/", views.logout_page)
