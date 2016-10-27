@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from budgeter.tests import ViewTest
 
 class SignUpViewTests(ViewTest):
@@ -8,8 +9,29 @@ class SignUpViewTests(ViewTest):
 
 
     def test_signup_view_redirects_to_me_upon_POST(self):
-        response = self.client.post("/accounts/signup/")
+        response = self.client.post("/accounts/signup/", data={
+         "firstname": "Isaac",
+         "lastname": "Jones",
+         "email": "xyz@abc.xy",
+         "password": "swordfish"
+        })
         self.assertRedirects(response, "/accounts/me/")
+
+
+    def test_signup_view_can_create_account(self):
+        self.assertEqual(User.objects.count(), 0)
+        self.client.post("/accounts/signup/", data={
+         "firstname": "Isaac",
+         "lastname": "Jones",
+         "email": "xyz@abc.xy",
+         "password": "swordfish"
+        })
+        self.assertEqual(User.objects.count(), 1)
+        user = User.objects.first()
+        self.assertEqual(user.first_name, "Isaac")
+        self.assertEqual(user.last_name, "Jones")
+        self.assertEqual(user.email, "xyz@abc.xy")
+
 
 
 
