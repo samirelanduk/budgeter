@@ -26,4 +26,6 @@ def account_page(request):
 
 
 def login_page(request):
+    if request.method == "POST":
+        return redirect("/")
     return render(request, "login.html")

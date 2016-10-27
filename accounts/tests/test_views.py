@@ -59,3 +59,11 @@ class LoginViewTests(ViewTest):
     def test_login_view_uses_login_template(self):
         response = self.client.get("/accounts/login/")
         self.assertTemplateUsed(response, "login.html")
+
+
+    def test_login_view_redirects_to_home(self):
+        response = self.client.post("/accounts/login/", data={
+         "email": "xyz@abc.xy",
+         "password": "swordfish"
+        })
+        self.assertRedirects(response, "/")
