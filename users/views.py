@@ -5,7 +5,11 @@ from django.contrib.auth import authenticate, login, logout
 # Create your views here.
 def signup_page(request):
     if request.method == "POST":
-        if User.objects.filter(username=request.POST["email"]).exists():
+        if not request.POST["firstname"]:
+            return render(request, "signup.html", {
+             "firstname_error": "You need to supply a first name."
+            })
+        elif User.objects.filter(username=request.POST["email"]).exists():
             return render(request, "signup.html", {
              "email_error": "There is already a user account with that email."
             })
