@@ -29,6 +29,9 @@
   <div>
     <label for="id_password">Password</label>
     <input type="password" name="password" id="id_password">
+    {% if password_error %}
+    <div id="password_error">{{ password_error }}</div>
+    {% endif %}
   </div>
   {% csrf_token %}
   <div>
