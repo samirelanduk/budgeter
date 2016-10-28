@@ -77,6 +77,17 @@ class SignUpViewTests(ViewTest):
         self.assertEqual(User.objects.count(), 2)
 
 
+    def test_signup_view_requires_email(self):
+        self.assertEqual(User.objects.count(), 2)
+        self.client.post("/users/signup/", data={
+         "firstname": "Isaac",
+         "lastname": "Jones",
+         "email": "",
+         "password": "swordfish"
+        })
+        self.assertEqual(User.objects.count(), 2)
+
+
 
 
 class AccountViewTests(ViewTest):
