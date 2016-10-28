@@ -77,6 +77,94 @@ class AccountCreationTests(FunctionalTest):
         )
 
 
+    def test_cannot_sign_up_without_fields(self):
+        # The user goes to the signup page
+        self.browser.get(self.live_server_url + "/users/signup/")
+
+        # User fills out form with no first name
+        form = self.browser.find_element_by_tag_name("form")
+        inputs = form.find_elements_by_tag_name("input")
+        inputs[1].send_keys("Blow")
+        inputs[2].send_keys("testemail@samireland.com")
+        inputs[3].send_keys("secret_shhh")
+        inputs[-1].click()
+
+        # They are still on the signup page
+        self.assertEqual(
+         self.browser.current_url,
+         self.live_server_url + "/users/signup/"
+        )
+
+        # There is a message telling them they need a first name
+        form = self.browser.find_element_by_tag_name("form")
+        firstname_error_div = form.find_element_by_id("firstname_error")
+        self.assertEqual(
+         email_error_div.text,
+         "You need to supply a first name."
+        )
+
+        # They try again without the last name
+        self.browser.get(self.live_server_url + "/users/signup/")
+        form = self.browser.find_element_by_tag_name("form")
+        inputs = form.find_elements_by_tag_name("input")
+        inputs[0].send_keys("Joe")
+        inputs[2].send_keys("testemail@samireland.com")
+        inputs[3].send_keys("secret_shhh")
+        inputs[-1].click()
+
+        # There is a message telling them they need a first name
+        self.assertEqual(
+         self.browser.current_url,
+         self.live_server_url + "/users/signup/"
+        )
+        form = self.browser.find_element_by_tag_name("form")
+        lastname_error_div = form.find_element_by_id("lasttname_error")
+        self.assertEqual(
+         email_error_div.text,
+         "You need to supply a last name."
+        )
+
+        # They try again without the email
+        self.browser.get(self.live_server_url + "/users/signup/")
+        form = self.browser.find_element_by_tag_name("form")
+        inputs = form.find_elements_by_tag_name("input")
+        inputs[0].send_keys("Joe")
+        inputs[1].send_keys("Blow")
+        inputs[3].send_keys("secret_shhh")
+        inputs[-1].click()
+
+        # There is a message telling them they need an email
+        self.assertEqual(
+         self.browser.current_url,
+         self.live_server_url + "/users/signup/"
+        )
+        form = self.browser.find_element_by_tag_name("form")
+        email_error_div = form.find_element_by_id("email_error")
+        self.assertEqual(
+         email_error_div.text,
+         "You need to supply an email."
+        )
+
+        # They try again without the password
+        self.browser.get(self.live_server_url + "/users/signup/")
+        form = self.browser.find_element_by_tag_name("form")
+        inputs = form.find_elements_by_tag_name("input")
+        inputs[0].send_keys("Joe")
+        inputs[1].send_keys("Blow")
+        inputs[2].send_keys("testemail@samireland.com")
+        inputs[-1].click()
+
+        # There is a message telling them they need an password
+        self.assertEqual(
+         self.browser.current_url,
+         self.live_server_url + "/users/signup/"
+        )
+        form = self.browser.find_element_by_tag_name("form")
+        password_error_div = form.find_element_by_id("password_error")
+        self.assertEqual(
+         email_error_div.text,
+         "You need to supply a password."
+        )
 
 
 class AccountLoginTests(FunctionalTest):
