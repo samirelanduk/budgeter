@@ -118,7 +118,7 @@ class AccountCreationTests(FunctionalTest):
          self.live_server_url + "/users/signup/"
         )
         form = self.browser.find_element_by_tag_name("form")
-        lastname_error_div = form.find_element_by_id("lasttname_error")
+        lastname_error_div = form.find_element_by_id("lastname_error")
         self.assertEqual(
          lastname_error_div.text,
          "You need to supply a last name."
