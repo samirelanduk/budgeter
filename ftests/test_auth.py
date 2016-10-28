@@ -99,7 +99,7 @@ class AccountCreationTests(FunctionalTest):
         form = self.browser.find_element_by_tag_name("form")
         firstname_error_div = form.find_element_by_id("firstname_error")
         self.assertEqual(
-         email_error_div.text,
+         firstname_error_div.text,
          "You need to supply a first name."
         )
 
@@ -112,7 +112,7 @@ class AccountCreationTests(FunctionalTest):
         inputs[3].send_keys("secret_shhh")
         inputs[-1].click()
 
-        # There is a message telling them they need a first name
+        # There is a message telling them they need a last name
         self.assertEqual(
          self.browser.current_url,
          self.live_server_url + "/users/signup/"
@@ -120,7 +120,7 @@ class AccountCreationTests(FunctionalTest):
         form = self.browser.find_element_by_tag_name("form")
         lastname_error_div = form.find_element_by_id("lasttname_error")
         self.assertEqual(
-         email_error_div.text,
+         lastname_error_div.text,
          "You need to supply a last name."
         )
 
@@ -162,7 +162,7 @@ class AccountCreationTests(FunctionalTest):
         form = self.browser.find_element_by_tag_name("form")
         password_error_div = form.find_element_by_id("password_error")
         self.assertEqual(
-         email_error_div.text,
+         password_error_div.text,
          "You need to supply a password."
         )
 
