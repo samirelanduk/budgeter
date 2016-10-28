@@ -44,6 +44,17 @@ class SignUpViewTests(ViewTest):
         self.assertIn("_auth_user_id", self.client.session)
 
 
+    def test_signup_view_will_not_use_existing_email(self):
+        self.assertEqual(User.objects.count(), 2)
+        self.client.post("/users/signup/", data={
+         "firstname": "Isaac",
+         "lastname": "Jones",
+         "email": "p1@s.com",
+         "password": "swordfish"
+        })
+        self.assertEqual(User.objects.count(), 2)
+
+
 
 
 class AccountViewTests(ViewTest):
