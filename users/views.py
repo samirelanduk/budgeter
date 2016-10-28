@@ -21,6 +21,10 @@ def signup_page(request):
             return render(request, "signup.html", {
              "email_error": "There is already a user account with that email."
             })
+        elif not request.POST["password"]:
+            return render(request, "signup.html", {
+             "password_error": "You need to supply a password."
+            })
         else:
             User.objects.create_user(
              first_name=request.POST["firstname"],
