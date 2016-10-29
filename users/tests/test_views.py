@@ -3,6 +3,11 @@ from budgeter.tests import ViewTest
 
 class SignUpViewTests(ViewTest):
 
+    def setUp(self):
+        ViewTest.setUp(self)
+        self.client.logout()
+
+
     def test_signup_view_uses_signup_template(self):
         response = self.client.get("/users/signup/")
         self.assertTemplateUsed(response, "signup.html")
@@ -108,8 +113,19 @@ class AccountViewTests(ViewTest):
         self.assertTemplateUsed(response, "account.html")
 
 
+    def test_account_view_requires_user_be_logged_in(self):
+        self.client.logout()
+        response = self.client.get("/users/me/")
+        self.assertRedirects(response, "/users/login/")
+
+
 
 class LoginViewTests(ViewTest):
+
+    def setUp(self):
+        ViewTest.setUp(self)
+        self.client.logout()
+
 
     def test_login_view_uses_login_template(self):
         response = self.client.get("/users/login/")
@@ -147,6 +163,7 @@ class LoginViewTests(ViewTest):
 class LogoutViewTests(ViewTest):
 
     def test_logout_view_can_actually_logout(self):
+        self.client.logout()
         self.client.login(username="p1@s.com", password="secret1")
         self.assertIn("_auth_user_id", self.client.session)
         response = self.client.get("/users/logout/")

@@ -19,6 +19,7 @@ class BudgetTest(TestCase):
          first_name="Sheila",
          last_name="Belle"
         )
+        self.client.login(username="p1@s.com", password="secret1")
 
 
 

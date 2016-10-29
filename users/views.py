@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 
@@ -54,6 +55,7 @@ def signup_page(request):
     return render(request, "signup.html")
 
 
+@login_required(login_url="/users/login/", redirect_field_name=None)
 def account_page(request):
     return render(request, "account.html")
 
