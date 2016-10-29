@@ -7,15 +7,21 @@ def signup_page(request):
     if request.method == "POST":
         if not request.POST["firstname"]:
             return render(request, "signup.html", {
-             "firstname_error": "You need to supply a first name."
+             "firstname_error": "You need to supply a first name.",
+             "lastname": request.POST["lastname"],
+             "email": request.POST["email"]
             })
         elif not request.POST["lastname"]:
             return render(request, "signup.html", {
-             "lastname_error": "You need to supply a last name."
+             "lastname_error": "You need to supply a last name.",
+             "firstname": request.POST["firstname"],
+             "email": request.POST["email"]
             })
         elif not request.POST["email"]:
             return render(request, "signup.html", {
-             "email_error": "You need to supply an email."
+             "email_error": "You need to supply an email.",
+             "firstname": request.POST["firstname"],
+             "lastname": request.POST["lastname"]
             })
         elif User.objects.filter(username=request.POST["email"]).exists():
             return render(request, "signup.html", {
@@ -23,7 +29,10 @@ def signup_page(request):
             })
         elif not request.POST["password"]:
             return render(request, "signup.html", {
-             "password_error": "You need to supply a password."
+             "password_error": "You need to supply a password.",
+             "firstname": request.POST["firstname"],
+             "lastname": request.POST["lastname"],
+             "email": request.POST["email"]
             })
         else:
             User.objects.create_user(

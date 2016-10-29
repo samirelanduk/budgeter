@@ -113,6 +113,8 @@ class AccountCreationTests(FunctionalTest):
 
         # They try again without the last name
         self.browser.get(self.live_server_url + "/users/signup/")
+        form = self.browser.find_element_by_tag_name("form")
+        inputs = form.find_elements_by_tag_name("input")
         inputs[0].send_keys("Joe")
         inputs[2].send_keys("testemail@samireland.com")
         inputs[3].send_keys("secret_shhh")
@@ -140,6 +142,8 @@ class AccountCreationTests(FunctionalTest):
 
         # They try again without the email
         self.browser.get(self.live_server_url + "/users/signup/")
+        form = self.browser.find_element_by_tag_name("form")
+        inputs = form.find_elements_by_tag_name("input")
         inputs[0].send_keys("Joe")
         inputs[1].send_keys("Blow")
         inputs[3].send_keys("secret_shhh")
@@ -167,6 +171,8 @@ class AccountCreationTests(FunctionalTest):
 
         # They try again without the password
         self.browser.get(self.live_server_url + "/users/signup/")
+        form = self.browser.find_element_by_tag_name("form")
+        inputs = form.find_elements_by_tag_name("input")
         inputs[0].send_keys("Joe")
         inputs[1].send_keys("Blow")
         inputs[2].send_keys("testemail@samireland.com")
@@ -189,7 +195,7 @@ class AccountCreationTests(FunctionalTest):
         inputs = form.find_elements_by_tag_name("input")
         self.assertEqual(inputs[0].get_attribute("value"), "Joe")
         self.assertEqual(inputs[1].get_attribute("value"), "Blow")
-        self.assertEqual(inputs[2].get_attribute("value"), "")
+        self.assertEqual(inputs[2].get_attribute("value"), "testemail@samireland.com")
         self.assertEqual(inputs[3].get_attribute("value"), "")
 
 
