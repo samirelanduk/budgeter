@@ -25,7 +25,10 @@ def signup_page(request):
             })
         elif User.objects.filter(username=request.POST["email"]).exists():
             return render(request, "signup.html", {
-             "email_error": "There is already a user account with that email."
+             "email_error": "There is already a user account with that email.",
+             "firstname": request.POST["firstname"],
+             "lastname": request.POST["lastname"],
+             "email": request.POST["email"]
             })
         elif not request.POST["password"]:
             return render(request, "signup.html", {
