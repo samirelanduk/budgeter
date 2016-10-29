@@ -76,6 +76,13 @@ class AccountCreationTests(FunctionalTest):
          "There is already a user account with that email."
         )
 
+        # The supplied data is still there (but not the password)
+        inputs = form.find_elements_by_tag_name("input")
+        self.assertEqual(inputs[0].get_attribute("value"), "Joe")
+        self.assertEqual(inputs[1].get_attribute("value"), "Blow")
+        self.assertEqual(inputs[2].get_attribute("value"), "p1@s.com")
+        self.assertEqual(inputs[3].get_attribute("value"), "")
+
 
     def test_cannot_sign_up_without_fields(self):
         # The user goes to the signup page
