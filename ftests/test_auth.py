@@ -206,6 +206,7 @@ class AccountCreationTests(FunctionalTest):
         self.assertEqual(inputs[3].get_attribute("value"), "")
 
 
+
 class AccountLoginTests(FunctionalTest):
 
     def test_can_login(self):
