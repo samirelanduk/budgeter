@@ -169,3 +169,11 @@ class LogoutViewTests(ViewTest):
         response = self.client.get("/users/logout/")
         self.assertNotIn("_auth_user_id", self.client.session)
         self.assertRedirects(response, "/")
+
+
+
+class AccountDeletionViewTests(ViewTest):
+
+    def test_account_deletion_view_uses_account_deletion_template(self):
+        response = self.client.get("/users/delete/")
+        self.assertTemplateUsed(response, "deleteaccount.html")

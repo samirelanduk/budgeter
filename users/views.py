@@ -75,4 +75,4 @@ def logout_page(request):
 
 
 def delete_account_page(request):
-    pass
+    return render(request, "deleteaccount.html")
