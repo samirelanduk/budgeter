@@ -419,7 +419,7 @@ class AccountDeletionTests(FunctionalTest):
 
         # They enter their password and delete the account
         inputs[0].send_keys("secret2")
-        inputs[1].click()
+        inputs[-1].click()
 
         # They are logged out and on the home page
         self.assertEqual(self.browser.current_url, self.live_server_url + "/")
@@ -467,7 +467,7 @@ class AccountDeletionTests(FunctionalTest):
 
         # THe enter the wrong password and try to delete
         inputs[0].send_keys("secret2")
-        inputs[1].click()
+        inputs[-1].click()
 
         # They are still on the delete page
         self.assertEqual(

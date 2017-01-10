@@ -4,4 +4,20 @@
 
 {% block main %}
 <h1>Delete your account</h1>
+
+<form method="POST">
+  <div>
+    Warning! Deleting your account is irreversible.
+  </div>
+  <div>
+    <label for="id_password">Password</label>
+    <input type="password" name="password" id="id_password">
+  </div>
+
+  {% csrf_token %}
+  <div>
+    <input type="submit">
+  </div>
+  <a href="/users/me/">Back to safety</a>
+</form>
 {% endblock %}
