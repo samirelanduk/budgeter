@@ -205,6 +205,39 @@ class AccountCreationTests(FunctionalTest):
         self.assertEqual(inputs[2].get_attribute("value"), "testemail@samireland.com")
         self.assertEqual(inputs[3].get_attribute("value"), "")
 
+        # In protest they try sending the form with no data at all
+        self.browser.get(self.live_server_url + "/users/signup/")
+        form = self.browser.find_element_by_tag_name("form")
+        inputs = form.find_elements_by_tag_name("input")
+        inputs[-1].click()
+
+        # There are error messages for each missing field
+        self.assertEqual(
+         self.browser.current_url,
+         self.live_server_url + "/users/signup/"
+        )
+        form = self.browser.find_element_by_tag_name("form")
+        firstname_error_div = form.find_element_by_id("firstname_error")
+        self.assertEqual(
+         firstname_error_div.text,
+         "You need to supply a first name."
+        )
+        lastname_error_div = form.find_element_by_id("lastname_error")
+        self.assertEqual(
+         lastname_error_div.text,
+         "You need to supply a last name."
+        )
+        email_error_div = form.find_element_by_id("email_error")
+        self.assertEqual(
+         email_error_div.text,
+         "You need to supply an email."
+        )
+        password_error_div = form.find_element_by_id("password_error")
+        self.assertEqual(
+         password_error_div.text,
+         "You need to supply a password."
+        )
+
 
 
 class AccountLoginTests(FunctionalTest):
@@ -244,8 +277,9 @@ class AccountLoginTests(FunctionalTest):
         # There is a logout link now
         auth_div = self.browser.find_element_by_id("auth")
         auth_links = auth_div.find_elements_by_tag_name("a")
-        self.assertEqual(len(auth_links), 1)
+        self.assertEqual(len(auth_links), 2)
         self.assertEqual(auth_links[0].text, "Log Out")
+        self.assertEqual(auth_links[1].text, "Your Account")
 
         # There is a link to the account page
         account_div = self.browser.find_element_by_id("account")
@@ -321,7 +355,7 @@ class AccountLoginTests(FunctionalTest):
         self.assertEqual(self.browser.current_url, self.live_server_url + "/")
         auth_div = self.browser.find_element_by_id("auth")
         auth_links = auth_div.find_elements_by_tag_name("a")
-        self.assertEqual(len(auth_links), 1)
+        self.assertEqual(len(auth_links), 2)
         self.assertEqual(auth_links[0].text, "Log Out")
 
         # They click it and are logged out
