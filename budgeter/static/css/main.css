@@ -13,6 +13,18 @@ header a {
   color: inherit;
 }
 
+header #home {
+  font-size: 200%;
+  display: inline-block;;
+  width: 49%;
+}
+
+header #auth {
+  display: inline-block;;
+  width: 49%;
+  text-align: right;
+}
+
 main {
   padding-left: 20px;
   padding-right: 20px;
