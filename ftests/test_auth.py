@@ -380,3 +380,110 @@ class AccountPageTests(FunctionalTest):
          self.browser.current_url,
          self.live_server_url + "/users/login/"
         )
+
+
+
+class AccountDeletionTests(FunctionalTest):
+
+    def test_can_delete_account(self):
+        # User logs in
+        self.browser.get(self.live_server_url + "/users/login/")
+        form = self.browser.find_element_by_tag_name("form")
+        inputs = form.find_elements_by_tag_name("input")
+        inputs[0].send_keys("p2@s.com")
+        inputs[1].send_keys("secret2")
+        inputs[-1].click()
+
+        # They go to their account page
+        self.browser.get(self.live_server_url + "/users/me/")
+
+        # There is a delete button - they click it
+        delete_section = self.browser.find_element_by_id("delete_section")
+        delete_button = delete_section.find_element_by_tag_name("a")
+        self.assertEqual(delete_button.text, "Delete Account")
+        delete_button.click()
+
+        # They are on the delete account page
+        self.assertEqual(
+         self.browser.current_url,
+         self.live_server_url + "/users/delete/"
+        )
+
+        # There is a warning that this cannot be undone
+        form = self.browser.find_element_by_tag_name("form")
+        self.assertIn("Warning", form.text)
+        inputs = form.find_elements_by_tag_name("input")
+        self.assertEqual(inputs[0].get_attribute("type"), "password")
+        back_button = form.find_element_by_tag_name("a")
+        self.assertEqual(back_button.get_attribute("href"), "/users/me/")
+
+        # They enter their password and delete the account
+        inputs[0].send_keys("secret2")
+        inputs[1].click()
+
+        # They are logged out and on the home page
+        self.assertEqual(self.browser.current_url, self.live_server_url + "/")
+        auth_div = self.browser.find_element_by_id("auth")
+        auth_links = auth_div.find_elements_by_tag_name("a")
+        self.assertEqual(len(auth_links), 2)
+        self.assertEqual(auth_links[0].text, "Sign Up")
+        self.assertEqual(auth_links[1].text, "Log In")
+
+        # They cannot log back in
+        self.browser.get(self.live_server_url + "/users/login/")
+        form = self.browser.find_element_by_tag_name("form")
+        inputs = form.find_elements_by_tag_name("input")
+        inputs[0].send_keys("p2@s.com")
+        inputs[1].send_keys("secret2")
+        inputs[-1].click()
+        self.assertEqual(
+         self.browser.current_url,
+         self.live_server_url + "/users/login/"
+        )
+        auth_div = self.browser.find_element_by_id("auth")
+        auth_links = auth_div.find_elements_by_tag_name("a")
+        self.assertEqual(len(auth_links), 2)
+        self.assertEqual(auth_links[0].text, "Sign Up")
+        self.assertEqual(auth_links[1].text, "Log In")
+
+
+    def test_need_password_to_delete_account(self):
+        # User logs in
+        self.browser.get(self.live_server_url + "/users/login/")
+        form = self.browser.find_element_by_tag_name("form")
+        inputs = form.find_elements_by_tag_name("input")
+        inputs[0].send_keys("p2@s.com")
+        inputs[1].send_keys("secret2")
+        inputs[-1].click()
+
+        # The user goes to delete their account
+        self.browser.get(self.live_server_url + "/users/me/")
+        delete_section = self.browser.find_element_by_id("delete_section")
+        delete_button = delete_section.find_element_by_tag_name("a")
+        self.assertEqual(delete_button.text, "Delete Account")
+        delete_button.click()
+        form = self.browser.find_element_by_tag_name("form")
+        inputs = form.find_elements_by_tag_name("input")
+
+        # THe enter the wrong password and try to delete
+        inputs[0].send_keys("secret2")
+        inputs[1].click()
+
+        # They are still on the delete page
+        self.assertEqual(
+         self.browser.current_url,
+         self.live_server_url + "/users/delete/"
+        )
+        form = self.browser.find_element_by_tag_name("form")
+        password_error_div = form.find_element_by_id("password_error")
+        self.assertEqual(
+         password_error_div.text,
+         "Credentials invalid."
+        )
+
+        # They are still logged in
+        auth_div = self.browser.find_element_by_id("auth")
+        auth_links = auth_div.find_elements_by_tag_name("a")
+        self.assertEqual(len(auth_links), 2)
+        self.assertEqual(auth_links[0].text, "Log Out")
+        self.assertEqual(auth_links[1].text, "Your Account")
