@@ -8,6 +8,8 @@
 </head>
 
 <body>
+
+<header>
   <div id="auth">
     {% if user.is_authenticated %}
     <a href="/users/logout/">Log Out</a>
@@ -21,8 +23,13 @@
     <a href="/users/me/">Your Account</a>
   </div>
   {% endif %}
-  {% block main %}
-  {% endblock %}
+</header>
+
+<main>
+{% block main %}
+{% endblock %}
+</main>
+
 </body>
 
 </html>
