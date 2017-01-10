@@ -6,38 +6,33 @@ from django.contrib.auth import authenticate, login, logout
 # Create your views here.
 def signup_page(request):
     if request.method == "POST":
+        form_data = {}
+        error = False
         if not request.POST["firstname"]:
-            return render(request, "signup.html", {
-             "firstname_error": "You need to supply a first name.",
-             "lastname": request.POST["lastname"],
-             "email": request.POST["email"]
-            })
-        elif not request.POST["lastname"]:
-            return render(request, "signup.html", {
-             "lastname_error": "You need to supply a last name.",
-             "firstname": request.POST["firstname"],
-             "email": request.POST["email"]
-            })
-        elif not request.POST["email"]:
-            return render(request, "signup.html", {
-             "email_error": "You need to supply an email.",
-             "firstname": request.POST["firstname"],
-             "lastname": request.POST["lastname"]
-            })
+            form_data["firstname_error"] = "You need to supply a first name."
+            error = True
+        else:
+            form_data["firstname"] = request.POST["firstname"]
+        if not request.POST["lastname"]:
+            form_data["lastname_error"] = "You need to supply a last name."
+            error = True
+        else:
+            form_data["lastname"] = request.POST["lastname"]
+        if not request.POST["email"]:
+            form_data["email_error"] = "You need to supply an email."
+            error = True
         elif User.objects.filter(username=request.POST["email"]).exists():
-            return render(request, "signup.html", {
-             "email_error": "There is already a user account with that email.",
-             "firstname": request.POST["firstname"],
-             "lastname": request.POST["lastname"],
-             "email": request.POST["email"]
-            })
-        elif not request.POST["password"]:
-            return render(request, "signup.html", {
-             "password_error": "You need to supply a password.",
-             "firstname": request.POST["firstname"],
-             "lastname": request.POST["lastname"],
-             "email": request.POST["email"]
-            })
+            form_data["email_error"] = "There is already a user account with that email."
+            form_data["email"] = request.POST["email"]
+            error = True
+        else:
+            form_data["email"] = request.POST["email"]
+        if not request.POST["password"]:
+            form_data["password_error"] = "You need to supply a password."
+            error = True
+
+        if error:
+            return render(request, "signup.html", form_data)
         else:
             User.objects.create_user(
              first_name=request.POST["firstname"],
