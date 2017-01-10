@@ -17,3 +17,7 @@ class HomeUrlTests(UrlTest):
 
     def test_logout_url_resolves_to_logout_view(self):
         self.check_url_returns_view("/users/logout/", views.logout_page)
+
+
+    def test_delete_url_resolves_to_delete_view(self):
+        self.check_url_returns_view("/users/delete/", views.delete_account_page)
