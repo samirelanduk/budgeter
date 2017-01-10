@@ -179,8 +179,29 @@ class AccountDeletionViewTests(ViewTest):
         self.assertTemplateUsed(response, "deleteaccount.html")
 
 
-    def test_delete__view_redirects_to_home_upon_POST(self):
+    def test_delete_view_redirects_to_home_upon_POST(self):
         response = self.client.post("/users/delete/", data={
          "password": "swordfish"
         })
         self.assertRedirects(response, "/")
+
+
+    def test_delete_view_logs_user_out_on_POST(self):
+        self.client.logout()
+        self.client.login(username="p1@s.com", password="secret1")
+        self.assertIn("_auth_user_id", self.client.session)
+        response = self.client.post("/users/delete/", data={
+         "password": "swordfish"
+        })
+        self.assertNotIn("_auth_user_id", self.client.session)
+        self.assertRedirects(response, "/")
+
+
+    def test_delete_view_can_delete_users(self):
+        self.assertEqual(User.objects.count(), 2)
+        self.client.post("/users/delete/", data={
+         "password": "swordfish"
+        })
+        self.assertEqual(User.objects.count(), 1)
+        remaining_user = User.objects.first()
+        self.assertNotEqual(remaining_user.email, "p1@s.com")
