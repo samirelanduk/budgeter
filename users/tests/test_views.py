@@ -177,3 +177,10 @@ class AccountDeletionViewTests(ViewTest):
     def test_account_deletion_view_uses_account_deletion_template(self):
         response = self.client.get("/users/delete/")
         self.assertTemplateUsed(response, "deleteaccount.html")
+
+
+    def test_delete__view_redirects_to_home_upon_POST(self):
+        response = self.client.post("/users/delete/", data={
+         "password": "swordfish"
+        })
+        self.assertRedirects(response, "/")

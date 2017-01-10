@@ -415,7 +415,10 @@ class AccountDeletionTests(FunctionalTest):
         inputs = form.find_elements_by_tag_name("input")
         self.assertEqual(inputs[0].get_attribute("type"), "password")
         back_button = form.find_element_by_tag_name("a")
-        self.assertEqual(back_button.get_attribute("href"), "/users/me/")
+        self.assertEqual(
+         back_button.get_attribute("href"),
+         self.live_server_url + "/users/me/"
+        )
 
         # They enter their password and delete the account
         inputs[0].send_keys("secret2")

@@ -75,4 +75,6 @@ def logout_page(request):
 
 
 def delete_account_page(request):
+    if request.method == "POST":
+        return redirect("/")
     return render(request, "deleteaccount.html")
