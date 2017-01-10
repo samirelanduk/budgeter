@@ -1,4 +1,26 @@
+body {
+  margin: 0px;
+  font-family: Raleway;
+}
 
+header {
+  background-color: #C23B22;
+  padding: 10px;
+  color: #FFFFFF;
+}
+
+header a {
+  color: inherit;
+}
+
+main {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+a {
+  text-decoration: none;
+}
 
 @media only screen and (min-width: 568px) {
   /* iPad down */
