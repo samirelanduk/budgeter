@@ -469,7 +469,7 @@ class AccountDeletionTests(FunctionalTest):
         inputs = form.find_elements_by_tag_name("input")
 
         # THe enter the wrong password and try to delete
-        inputs[0].send_keys("secret2")
+        inputs[0].send_keys("wrong")
         inputs[-1].click()
 
         # They are still on the delete page

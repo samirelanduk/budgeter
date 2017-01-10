@@ -76,8 +76,14 @@ def logout_page(request):
 
 def delete_account_page(request):
     if request.method == "POST":
-        user = User.objects.get(email=request.user.email)
-        logout(request)
-        user.delete()
-        return redirect("/")
+        user = authenticate(
+         username=request.user.username,
+         password=request.POST["password"]
+        )
+        if user is not None:
+            logout(request)
+            user.delete()
+            return redirect("/")
+        else:
+            return render(request, "deleteaccount.html")
     return render(request, "deleteaccount.html")
