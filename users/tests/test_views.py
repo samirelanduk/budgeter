@@ -179,6 +179,12 @@ class AccountDeletionViewTests(ViewTest):
         self.assertTemplateUsed(response, "deleteaccount.html")
 
 
+    def test_delete_account_view_requires_user_be_logged_in(self):
+        self.client.logout()
+        response = self.client.get("/users/delete/")
+        self.assertRedirects(response, "/users/login/")
+
+
     def test_delete_view_redirects_to_home_upon_POST(self):
         response = self.client.post("/users/delete/", data={
          "password": "secret1"

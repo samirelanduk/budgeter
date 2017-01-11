@@ -74,6 +74,7 @@ def logout_page(request):
     return redirect("/")
 
 
+@login_required(login_url="/users/login/", redirect_field_name=None)
 def delete_account_page(request):
     if request.method == "POST":
         user = authenticate(

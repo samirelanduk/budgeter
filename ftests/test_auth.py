@@ -490,3 +490,14 @@ class AccountDeletionTests(FunctionalTest):
         self.assertEqual(len(auth_links), 2)
         self.assertEqual(auth_links[0].text, "Log Out")
         self.assertEqual(auth_links[1].text, "Your Account")
+
+
+    def test_cannot_access_account_deletion_page_without_logging_in(self):
+        # The user tries to access the account page
+        self.browser.get(self.live_server_url + "/users/delete/")
+
+        # They have been redirected to the login page
+        self.assertEqual(
+         self.browser.current_url,
+         self.live_server_url + "/users/login/"
+        )
