@@ -13,6 +13,9 @@
     <label for="id_password">Password</label>
     <input type="password" name="password" id="id_password">
   </div>
+  {% if credentials_incorrect %}
+  <div id="password_error">Credentials invalid.</div>
+  {% endif %}
 
   {% csrf_token %}
   <div>

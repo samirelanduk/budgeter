@@ -85,5 +85,5 @@ def delete_account_page(request):
             user.delete()
             return redirect("/")
         else:
-            return render(request, "deleteaccount.html")
+            return render(request, "deleteaccount.html", {"credentials_incorrect": True})
     return render(request, "deleteaccount.html")
