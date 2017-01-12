@@ -14,11 +14,9 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from home import urls as home_urls
 from users import urls as user_urls
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^users/', include(user_urls)),
-    url(r'^', include(home_urls)),
+    url(r'^', include(user_urls)),
 ]

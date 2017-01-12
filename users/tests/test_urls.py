@@ -1,22 +1,22 @@
 from budgeter.tests import UrlTest
 from users import views
 
-class HomeUrlTests(UrlTest):
+class UsersUrlTests(UrlTest):
 
-    def test_signup_url_resolves_to_signup_view(self):
-        self.check_url_returns_view("/users/signup/", views.signup_page)
+    def test_home_page_url_resolves_to_home_page_view(self):
+        self.check_url_returns_view("/", views.home_page)
 
 
-    def test_me_url_resolves_to_me_view(self):
-        self.check_url_returns_view("/users/me/", views.account_page)
+    def test_profile_url_resolves_to_profile_view(self):
+        self.check_url_returns_view("/profile/", views.profile_page)
 
 
     def test_login_url_resolves_to_login_view(self):
-        self.check_url_returns_view("/users/login/", views.login_page)
+        self.check_url_returns_view("/login/", views.login_page)
 
 
     def test_logout_url_resolves_to_logout_view(self):
-        self.check_url_returns_view("/users/logout/", views.logout_page)
+        self.check_url_returns_view("/logout/", views.logout_page)
 
 
     def test_delete_url_resolves_to_delete_view(self):

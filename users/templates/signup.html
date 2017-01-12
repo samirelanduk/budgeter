@@ -4,38 +4,5 @@
 
 {% block main %}
 <h1>Create an account.</h1>
-<form method="POST">
-  <div>
-    <label for="id_firstname">First Name</label>
-    <input type="text" name="firstname" id="id_firstname"{% if firstname %} value="{{ firstname }}" {% endif %}>
-    {% if firstname_error %}
-    <div id="firstname_error">{{ firstname_error }}</div>
-    {% endif %}
-  </div>
-  <div>
-    <label for="id_lastname">Last Name</label>
-    <input type="text" name="lastname" id="id_lastname"{% if lastname %} value="{{ lastname }}" {% endif %}>
-    {% if lastname_error %}
-    <div id="lastname_error">{{ lastname_error }}</div>
-    {% endif %}
-  </div>
-  <div>
-    <label for="id_email">Email</label>
-    <input type="text" name="email" id="id_email"{% if email %} value="{{ email }}" {% endif %}>
-    {% if email_error %}
-    <div id="email_error">{{ email_error }}</div>
-    {% endif %}
-  </div>
-  <div>
-    <label for="id_password">Password</label>
-    <input type="password" name="password" id="id_password">
-    {% if password_error %}
-    <div id="password_error">{{ password_error }}</div>
-    {% endif %}
-  </div>
-  {% csrf_token %}
-  <div>
-    <input type="submit">
-  </div>
-</form>
+
 {% endblock %}

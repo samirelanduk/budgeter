@@ -1,31 +1,31 @@
 from django.contrib.auth.models import User
 from budgeter.tests import ViewTest
 
-class SignUpViewTests(ViewTest):
+class HomePageViewTests(ViewTest):
 
     def setUp(self):
         ViewTest.setUp(self)
         self.client.logout()
 
 
-    def test_signup_view_uses_signup_template(self):
-        response = self.client.get("/users/signup/")
-        self.assertTemplateUsed(response, "signup.html")
+    def test_home_view_uses_home_template(self):
+        response = self.client.get("/")
+        self.assertTemplateUsed(response, "home.html")
 
 
-    def test_signup_view_redirects_to_me_upon_POST(self):
-        response = self.client.post("/users/signup/", data={
+    def test_home_view_redirects_to_profile_upon_POST(self):
+        response = self.client.post("/", data={
          "firstname": "Isaac",
          "lastname": "Jones",
          "email": "xyz@abc.xy",
          "password": "swordfish"
         })
-        self.assertRedirects(response, "/users/me/")
+        self.assertRedirects(response, "/profile/")
 
 
-    def test_signup_view_can_create_account(self):
+    def test_home_view_can_create_account(self):
         self.assertEqual(User.objects.count(), 2)
-        self.client.post("/users/signup/", data={
+        self.client.post("/", data={
          "firstname": "Isaac",
          "lastname": "Jones",
          "email": "xyz@abc.xy",
@@ -38,9 +38,9 @@ class SignUpViewTests(ViewTest):
         self.assertEqual(user.email, "xyz@abc.xy")
 
 
-    def test_signup_view_will_sign_in_new_user(self):
+    def test_home_view_will_sign_in_new_user(self):
         self.assertNotIn("_auth_user_id", self.client.session)
-        self.client.post("/users/signup/", data={
+        self.client.post("/", data={
          "firstname": "Isaac",
          "lastname": "Jones",
          "email": "xyz@abc.xy",
@@ -49,9 +49,9 @@ class SignUpViewTests(ViewTest):
         self.assertIn("_auth_user_id", self.client.session)
 
 
-    def test_signup_view_will_not_use_existing_email(self):
+    def test_home_view_will_not_use_existing_email(self):
         self.assertEqual(User.objects.count(), 2)
-        self.client.post("/users/signup/", data={
+        self.client.post("/", data={
          "firstname": "Isaac",
          "lastname": "Jones",
          "email": "p1@s.com",
@@ -60,9 +60,9 @@ class SignUpViewTests(ViewTest):
         self.assertEqual(User.objects.count(), 2)
 
 
-    def test_signup_view_requires_first_names(self):
+    def test_home_view_requires_first_names(self):
         self.assertEqual(User.objects.count(), 2)
-        self.client.post("/users/signup/", data={
+        self.client.post("/", data={
          "firstname": "",
          "lastname": "Jones",
          "email": "xyz@abc.xy",
@@ -71,9 +71,9 @@ class SignUpViewTests(ViewTest):
         self.assertEqual(User.objects.count(), 2)
 
 
-    def test_signup_view_requires_last_names(self):
+    def test_home_view_requires_last_names(self):
         self.assertEqual(User.objects.count(), 2)
-        self.client.post("/users/signup/", data={
+        self.client.post("/", data={
          "firstname": "Isaac",
          "lastname": "",
          "email": "xyz@abc.xy",
@@ -82,9 +82,9 @@ class SignUpViewTests(ViewTest):
         self.assertEqual(User.objects.count(), 2)
 
 
-    def test_signup_view_requires_email(self):
+    def test_home_view_requires_email(self):
         self.assertEqual(User.objects.count(), 2)
-        self.client.post("/users/signup/", data={
+        self.client.post("/", data={
          "firstname": "Isaac",
          "lastname": "Jones",
          "email": "",
@@ -93,9 +93,9 @@ class SignUpViewTests(ViewTest):
         self.assertEqual(User.objects.count(), 2)
 
 
-    def test_signup_view_requires_password(self):
+    def test_home_view_requires_password(self):
         self.assertEqual(User.objects.count(), 2)
-        self.client.post("/users/signup/", data={
+        self.client.post("/", data={
          "firstname": "Isaac",
          "lastname": "Jones",
          "email": "xyz@abc.xy",
@@ -105,18 +105,17 @@ class SignUpViewTests(ViewTest):
 
 
 
+class ProfileViewTests(ViewTest):
 
-class AccountViewTests(ViewTest):
-
-    def test_account_view_uses_account_template(self):
-        response = self.client.get("/users/me/")
-        self.assertTemplateUsed(response, "account.html")
+    def test_profile_view_uses_profile_template(self):
+        response = self.client.get("/profile/")
+        self.assertTemplateUsed(response, "profile.html")
 
 
-    def test_account_view_requires_user_be_logged_in(self):
+    def test_profile_view_requires_user_be_logged_in(self):
         self.client.logout()
-        response = self.client.get("/users/me/")
-        self.assertRedirects(response, "/users/login/")
+        response = self.client.get("/profile/")
+        self.assertRedirects(response, "/login/")
 
 
 
@@ -128,12 +127,12 @@ class LoginViewTests(ViewTest):
 
 
     def test_login_view_uses_login_template(self):
-        response = self.client.get("/users/login/")
+        response = self.client.get("/login/")
         self.assertTemplateUsed(response, "login.html")
 
 
     def test_login_view_redirects_to_home(self):
-        response = self.client.post("/users/login/", data={
+        response = self.client.post("/login/", data={
          "email": "p1@s.com",
          "password": "secret1"
         })
@@ -142,7 +141,7 @@ class LoginViewTests(ViewTest):
 
     def test_login_view_will_log_in_user(self):
         self.assertNotIn("_auth_user_id", self.client.session)
-        self.client.post("/users/login/", data={
+        self.client.post("/login/", data={
          "email": "p1@s.com",
          "password": "secret1"
         })
@@ -151,7 +150,7 @@ class LoginViewTests(ViewTest):
 
     def test_login_view_wont_accept_wrong_details(self):
         self.assertNotIn("_auth_user_id", self.client.session)
-        response = self.client.post("/users/login/", data={
+        response = self.client.post("/login/", data={
          "email": "xxx@s.com",
          "password": "xxxxx"
         })
@@ -166,7 +165,7 @@ class LogoutViewTests(ViewTest):
         self.client.logout()
         self.client.login(username="p1@s.com", password="secret1")
         self.assertIn("_auth_user_id", self.client.session)
-        response = self.client.get("/users/logout/")
+        response = self.client.get("/logout/")
         self.assertNotIn("_auth_user_id", self.client.session)
         self.assertRedirects(response, "/")
 
@@ -182,7 +181,7 @@ class AccountDeletionViewTests(ViewTest):
     def test_delete_account_view_requires_user_be_logged_in(self):
         self.client.logout()
         response = self.client.get("/users/delete/")
-        self.assertRedirects(response, "/users/login/")
+        self.assertRedirects(response, "/login/")
 
 
     def test_delete_view_redirects_to_home_upon_POST(self):

@@ -18,14 +18,13 @@
   </div>
   <div id="auth">
     {% if user.is_authenticated %}
-    <a href="/users/logout/">Log Out</a>
+    <a href="/logout/">Log Out</a>
     {% else %}
-    <a href="/users/signup/">Sign Up</a>
-    <a href="/users/login/">Log In</a>
+    <a href="/login/">Log In</a>
     {% endif %}
     {% if user.is_authenticated %}
     <div id="account">
-      <a href="/users/me/">Your Account</a>
+      <a href="/profile/">Your Account</a>
     </div>
     {% endif %}
   </div>

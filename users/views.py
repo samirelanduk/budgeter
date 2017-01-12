@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 
 # Create your views here.
-def signup_page(request):
+def home_page(request):
     if request.method == "POST":
         form_data = {}
         error = False
@@ -32,7 +32,7 @@ def signup_page(request):
             error = True
 
         if error:
-            return render(request, "signup.html", form_data)
+            return render(request, "home.html", form_data)
         else:
             User.objects.create_user(
              first_name=request.POST["firstname"],
@@ -46,13 +46,13 @@ def signup_page(request):
              password=request.POST["password"]
             )
             login(request, user)
-            return redirect("/users/me/")
-    return render(request, "signup.html")
+            return redirect("/profile/")
+    return render(request, "home.html")
 
 
-@login_required(login_url="/users/login/", redirect_field_name=None)
-def account_page(request):
-    return render(request, "account.html")
+@login_required(login_url="/login/", redirect_field_name=None)
+def profile_page(request):
+    return render(request, "profile.html")
 
 
 def login_page(request):
@@ -74,7 +74,7 @@ def logout_page(request):
     return redirect("/")
 
 
-@login_required(login_url="/users/login/", redirect_field_name=None)
+@login_required(login_url="/login/", redirect_field_name=None)
 def delete_account_page(request):
     if request.method == "POST":
         user = authenticate(

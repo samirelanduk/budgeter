@@ -18,7 +18,7 @@ class AccountCreationTests(FunctionalTest):
         # The user is taken to the account page for their new account
         self.assertEqual(
          self.browser.current_url,
-         self.live_server_url + "/account/"
+         self.live_server_url + "/profile/"
         )
         self.assertEqual(
          self.browser.find_element_by_tag_name("h1").text,
@@ -238,7 +238,7 @@ class AccountLoginTests(FunctionalTest):
         auth_links[0].click()
         self.assertEqual(
          self.browser.current_url,
-         self.live_server_url + "/users/login/"
+         self.live_server_url + "/login/"
         )
         self.assertEqual(
          self.browser.find_element_by_tag_name("h1").text,
@@ -269,17 +269,22 @@ class AccountLoginTests(FunctionalTest):
         account_link.click()
         self.assertEqual(
          self.browser.current_url,
-         self.live_server_url + "/account/"
+         self.live_server_url + "/profile/"
         )
         self.assertEqual(
          self.browser.find_element_by_tag_name("h2").text,
          "Persona Una"
         )
 
+        # The signup form is gone from the hone page
+        self.browser.get(self.live_server_url + "/")
+        forms = self.browser.find_elements_by_tag_name("form")
+        self.assertEqual(len(forms), 0)
+
 
     def test_invalid_credentials_wont_login(self):
         # User goes to login page
-        self.browser.get(self.live_server_url + "/users/login/")
+        self.browser.get(self.live_server_url + "/login/")
 
         # They try to login in with an incorrect email
         form = self.browser.find_element_by_tag_name("form")
@@ -291,7 +296,7 @@ class AccountLoginTests(FunctionalTest):
         # They are stll on the login page
         self.assertEqual(
          self.browser.current_url,
-         self.live_server_url + "/users/login/"
+         self.live_server_url + "/login/"
         )
 
         # There is an error message
@@ -302,7 +307,7 @@ class AccountLoginTests(FunctionalTest):
         )
 
         # They try again with an incorrect password
-        self.browser.get(self.live_server_url + "/users/login/")
+        self.browser.get(self.live_server_url + "/login/")
         form = self.browser.find_element_by_tag_name("form")
         inputs = form.find_elements_by_tag_name("input")
         inputs[0].send_keys("p1@s.com")
@@ -312,7 +317,7 @@ class AccountLoginTests(FunctionalTest):
         # They are stll on the login page
         self.assertEqual(
          self.browser.current_url,
-         self.live_server_url + "/users/login/"
+         self.live_server_url + "/login/"
         )
 
         # There is an error message
@@ -325,7 +330,7 @@ class AccountLoginTests(FunctionalTest):
 
     def test_can_logout(self):
         # User logs in
-        self.browser.get(self.live_server_url + "/users/login/")
+        self.browser.get(self.live_server_url + "/login/")
         form = self.browser.find_element_by_tag_name("form")
         inputs = form.find_elements_by_tag_name("input")
         inputs[0].send_keys("p2@s.com")
@@ -345,7 +350,7 @@ class AccountLoginTests(FunctionalTest):
         auth_div = self.browser.find_element_by_id("auth")
         auth_links = auth_div.find_elements_by_tag_name("a")
         self.assertEqual(len(auth_links), 1)
-        self.assertEqual(auth_links[0].text, "Log Up")
+        self.assertEqual(auth_links[0].text, "Log In")
 
 
 
@@ -353,12 +358,12 @@ class AccountPageTests(FunctionalTest):
 
     def test_cannot_access_account_page_without_logging_in(self):
         # The user tries to access the account page
-        self.browser.get(self.live_server_url + "/account/")
+        self.browser.get(self.live_server_url + "/profile/")
 
         # They have been redirected to the login page
         self.assertEqual(
          self.browser.current_url,
-         self.live_server_url + "/users/login/"
+         self.live_server_url + "/login/"
         )
 
 
@@ -367,7 +372,7 @@ class AccountDeletionTests(FunctionalTest):
 
     def test_can_delete_account(self):
         # User logs in
-        self.browser.get(self.live_server_url + "/users/login/")
+        self.browser.get(self.live_server_url + "/login/")
         form = self.browser.find_element_by_tag_name("form")
         inputs = form.find_elements_by_tag_name("input")
         inputs[0].send_keys("p2@s.com")
@@ -375,7 +380,7 @@ class AccountDeletionTests(FunctionalTest):
         inputs[-1].click()
 
         # They go to their account page
-        self.browser.get(self.live_server_url + "/account/")
+        self.browser.get(self.live_server_url + "/profile/")
 
         # There is a delete button - they click it
         delete_section = self.browser.find_element_by_id("delete_section")
@@ -397,7 +402,7 @@ class AccountDeletionTests(FunctionalTest):
         back_button = form.find_element_by_tag_name("a")
         self.assertEqual(
          back_button.get_attribute("href"),
-         self.live_server_url + "/users/me/"
+         self.live_server_url + "/profile/"
         )
 
         # They enter their password and delete the account
@@ -408,12 +413,11 @@ class AccountDeletionTests(FunctionalTest):
         self.assertEqual(self.browser.current_url, self.live_server_url + "/")
         auth_div = self.browser.find_element_by_id("auth")
         auth_links = auth_div.find_elements_by_tag_name("a")
-        self.assertEqual(len(auth_links), 2)
-        self.assertEqual(auth_links[0].text, "Sign Up")
-        self.assertEqual(auth_links[1].text, "Log In")
+        self.assertEqual(len(auth_links), 1)
+        self.assertEqual(auth_links[0].text, "Log In")
 
         # They cannot log back in
-        self.browser.get(self.live_server_url + "/users/login/")
+        self.browser.get(self.live_server_url + "/login/")
         form = self.browser.find_element_by_tag_name("form")
         inputs = form.find_elements_by_tag_name("input")
         inputs[0].send_keys("p2@s.com")
@@ -421,18 +425,17 @@ class AccountDeletionTests(FunctionalTest):
         inputs[-1].click()
         self.assertEqual(
          self.browser.current_url,
-         self.live_server_url + "/users/login/"
+         self.live_server_url + "/login/"
         )
         auth_div = self.browser.find_element_by_id("auth")
         auth_links = auth_div.find_elements_by_tag_name("a")
-        self.assertEqual(len(auth_links), 2)
-        self.assertEqual(auth_links[0].text, "Sign Up")
-        self.assertEqual(auth_links[1].text, "Log In")
+        self.assertEqual(len(auth_links), 1)
+        self.assertEqual(auth_links[0].text, "Log In")
 
 
     def test_need_password_to_delete_account(self):
         # User logs in
-        self.browser.get(self.live_server_url + "/users/login/")
+        self.browser.get(self.live_server_url + "/login/")
         form = self.browser.find_element_by_tag_name("form")
         inputs = form.find_elements_by_tag_name("input")
         inputs[0].send_keys("p2@s.com")
@@ -440,7 +443,7 @@ class AccountDeletionTests(FunctionalTest):
         inputs[-1].click()
 
         # The user goes to delete their account
-        self.browser.get(self.live_server_url + "/account/")
+        self.browser.get(self.live_server_url + "/profile/")
         delete_section = self.browser.find_element_by_id("delete_section")
         delete_button = delete_section.find_element_by_tag_name("a")
         self.assertEqual(delete_button.text, "Delete Account")
@@ -479,5 +482,5 @@ class AccountDeletionTests(FunctionalTest):
         # They have been redirected to the login page
         self.assertEqual(
          self.browser.current_url,
-         self.live_server_url + "/users/login/"
+         self.live_server_url + "/login/"
         )
