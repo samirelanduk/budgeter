@@ -6,25 +6,7 @@ class AccountCreationTests(FunctionalTest):
         # User goes to the home page
         self.browser.get(self.live_server_url + "/")
 
-        # There is the option to create an account and login
-        auth_div = self.browser.find_element_by_id("auth")
-        auth_links = auth_div.find_elements_by_tag_name("a")
-        self.assertEqual(len(auth_links), 2)
-        self.assertEqual(auth_links[0].text, "Sign Up")
-        self.assertEqual(auth_links[1].text, "Log In")
-
-        # User clicks the sign up link and is taken to the sign up page
-        auth_links[0].click()
-        self.assertEqual(
-         self.browser.current_url,
-         self.live_server_url + "/users/signup/"
-        )
-        self.assertEqual(
-         self.browser.find_element_by_tag_name("h1").text,
-         "Create an account."
-        )
-
-        # User fills out form
+        # There is a form to signup, which they fill in
         form = self.browser.find_element_by_tag_name("form")
         inputs = form.find_elements_by_tag_name("input")
         inputs[0].send_keys("Joe")
@@ -36,7 +18,7 @@ class AccountCreationTests(FunctionalTest):
         # The user is taken to the account page for their new account
         self.assertEqual(
          self.browser.current_url,
-         self.live_server_url + "/users/me/"
+         self.live_server_url + "/account/"
         )
         self.assertEqual(
          self.browser.find_element_by_tag_name("h1").text,
@@ -50,7 +32,7 @@ class AccountCreationTests(FunctionalTest):
 
     def test_cannot_create_account_with_existing_email(self):
         # The user goes to the signup page
-        self.browser.get(self.live_server_url + "/users/signup/")
+        self.browser.get(self.live_server_url + "/")
 
         # User fills out form with a pre-existing email address
         form = self.browser.find_element_by_tag_name("form")
@@ -61,10 +43,10 @@ class AccountCreationTests(FunctionalTest):
         inputs[3].send_keys("secret_shhh")
         inputs[-1].click()
 
-        # They are still on the signup page
+        # They are still on the home page
         self.assertEqual(
          self.browser.current_url,
-         self.live_server_url + "/users/signup/"
+         self.live_server_url + "/"
         )
 
         # There is a message telling them the email already exists
@@ -86,7 +68,7 @@ class AccountCreationTests(FunctionalTest):
 
     def test_cannot_sign_up_without_fields(self):
         # The user goes to the signup page
-        self.browser.get(self.live_server_url + "/users/signup/")
+        self.browser.get(self.live_server_url + "/")
 
         # User fills out form with no first name
         form = self.browser.find_element_by_tag_name("form")
@@ -96,10 +78,10 @@ class AccountCreationTests(FunctionalTest):
         inputs[3].send_keys("secret_shhh")
         inputs[-1].click()
 
-        # They are still on the signup page
+        # They are still on the home page
         self.assertEqual(
          self.browser.current_url,
-         self.live_server_url + "/users/signup/"
+         self.live_server_url + "/"
         )
 
         # There is a message telling them they need a first name
@@ -119,7 +101,7 @@ class AccountCreationTests(FunctionalTest):
         self.assertEqual(inputs[3].get_attribute("value"), "")
 
         # They try again without the last name
-        self.browser.get(self.live_server_url + "/users/signup/")
+        self.browser.get(self.live_server_url + "/")
         form = self.browser.find_element_by_tag_name("form")
         inputs = form.find_elements_by_tag_name("input")
         inputs[0].send_keys("Joe")
@@ -130,7 +112,7 @@ class AccountCreationTests(FunctionalTest):
         # There is a message telling them they need a last name
         self.assertEqual(
          self.browser.current_url,
-         self.live_server_url + "/users/signup/"
+         self.live_server_url + "/"
         )
         form = self.browser.find_element_by_tag_name("form")
         lastname_error_div = form.find_element_by_id("lastname_error")
@@ -148,7 +130,7 @@ class AccountCreationTests(FunctionalTest):
         self.assertEqual(inputs[3].get_attribute("value"), "")
 
         # They try again without the email
-        self.browser.get(self.live_server_url + "/users/signup/")
+        self.browser.get(self.live_server_url + "/")
         form = self.browser.find_element_by_tag_name("form")
         inputs = form.find_elements_by_tag_name("input")
         inputs[0].send_keys("Joe")
@@ -159,7 +141,7 @@ class AccountCreationTests(FunctionalTest):
         # There is a message telling them they need an email
         self.assertEqual(
          self.browser.current_url,
-         self.live_server_url + "/users/signup/"
+         self.live_server_url + "/"
         )
         form = self.browser.find_element_by_tag_name("form")
         email_error_div = form.find_element_by_id("email_error")
@@ -177,7 +159,7 @@ class AccountCreationTests(FunctionalTest):
         self.assertEqual(inputs[3].get_attribute("value"), "")
 
         # They try again without the password
-        self.browser.get(self.live_server_url + "/users/signup/")
+        self.browser.get(self.live_server_url + "/")
         form = self.browser.find_element_by_tag_name("form")
         inputs = form.find_elements_by_tag_name("input")
         inputs[0].send_keys("Joe")
@@ -188,7 +170,7 @@ class AccountCreationTests(FunctionalTest):
         # There is a message telling them they need an password
         self.assertEqual(
          self.browser.current_url,
-         self.live_server_url + "/users/signup/"
+         self.live_server_url + "/"
         )
         form = self.browser.find_element_by_tag_name("form")
         password_error_div = form.find_element_by_id("password_error")
@@ -206,7 +188,7 @@ class AccountCreationTests(FunctionalTest):
         self.assertEqual(inputs[3].get_attribute("value"), "")
 
         # In protest they try sending the form with no data at all
-        self.browser.get(self.live_server_url + "/users/signup/")
+        self.browser.get(self.live_server_url + "/")
         form = self.browser.find_element_by_tag_name("form")
         inputs = form.find_elements_by_tag_name("input")
         inputs[-1].click()
@@ -214,7 +196,7 @@ class AccountCreationTests(FunctionalTest):
         # There are error messages for each missing field
         self.assertEqual(
          self.browser.current_url,
-         self.live_server_url + "/users/signup/"
+         self.live_server_url + "/"
         )
         form = self.browser.find_element_by_tag_name("form")
         firstname_error_div = form.find_element_by_id("firstname_error")
@@ -249,12 +231,11 @@ class AccountLoginTests(FunctionalTest):
         # There is the option to create an account and login
         auth_div = self.browser.find_element_by_id("auth")
         auth_links = auth_div.find_elements_by_tag_name("a")
-        self.assertEqual(len(auth_links), 2)
-        self.assertEqual(auth_links[0].text, "Sign Up")
-        self.assertEqual(auth_links[1].text, "Log In")
+        self.assertEqual(len(auth_links), 1)
+        self.assertEqual(auth_links[0].text, "Log In")
 
         # User clicks the log in and is taken to the log in page
-        auth_links[1].click()
+        auth_links[0].click()
         self.assertEqual(
          self.browser.current_url,
          self.live_server_url + "/users/login/"
@@ -288,7 +269,7 @@ class AccountLoginTests(FunctionalTest):
         account_link.click()
         self.assertEqual(
          self.browser.current_url,
-         self.live_server_url + "/users/me/"
+         self.live_server_url + "/account/"
         )
         self.assertEqual(
          self.browser.find_element_by_tag_name("h2").text,
@@ -363,9 +344,8 @@ class AccountLoginTests(FunctionalTest):
         self.assertEqual(self.browser.current_url, self.live_server_url + "/")
         auth_div = self.browser.find_element_by_id("auth")
         auth_links = auth_div.find_elements_by_tag_name("a")
-        self.assertEqual(len(auth_links), 2)
-        self.assertEqual(auth_links[0].text, "Sign Up")
-        self.assertEqual(auth_links[1].text, "Log In")
+        self.assertEqual(len(auth_links), 1)
+        self.assertEqual(auth_links[0].text, "Log Up")
 
 
 
@@ -373,7 +353,7 @@ class AccountPageTests(FunctionalTest):
 
     def test_cannot_access_account_page_without_logging_in(self):
         # The user tries to access the account page
-        self.browser.get(self.live_server_url + "/users/me/")
+        self.browser.get(self.live_server_url + "/account/")
 
         # They have been redirected to the login page
         self.assertEqual(
@@ -395,7 +375,7 @@ class AccountDeletionTests(FunctionalTest):
         inputs[-1].click()
 
         # They go to their account page
-        self.browser.get(self.live_server_url + "/users/me/")
+        self.browser.get(self.live_server_url + "/account/")
 
         # There is a delete button - they click it
         delete_section = self.browser.find_element_by_id("delete_section")
@@ -460,7 +440,7 @@ class AccountDeletionTests(FunctionalTest):
         inputs[-1].click()
 
         # The user goes to delete their account
-        self.browser.get(self.live_server_url + "/users/me/")
+        self.browser.get(self.live_server_url + "/account/")
         delete_section = self.browser.find_element_by_id("delete_section")
         delete_button = delete_section.find_element_by_tag_name("a")
         self.assertEqual(delete_button.text, "Delete Account")
